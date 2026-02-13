@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#FFB6C1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Happy Valentine's Day, Popouuu 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Caveat:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   GLOBAL RESET & VARIABLES
+═══════════════════════════════════════════════ */
+:root {
+  --blush:   #FFB6C1;
+  --rose:    #FF8FAB;
+  --petal:   #FFDDE4;
+  --cream:   #FFF8F0;
+  --warm:    #FFF0E8;
+  --baby-red:#E8536A;
+  --deep-red:#C03060;
+  --gold:    #F5C842;
+  --sage:    #B5C9B7;
+  --shadow:  rgba(232,83,106,0.15);
+  --text:    #7A3045;
+  --text-light:#C07890;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { width:100%; height:100%; overflow:hidden; }
+body {
+  width:100%; height:100%; overflow:hidden;
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--cream);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ctext y='16' font-size='14'%3E💖%3C/text%3E%3C/svg%3E"), auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* ═══════════════════════════════════════════════
+   PAGES SYSTEM — MOBILE FIRST
+═══════════════════════════════════════════════ */
+.page {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  z-index: 1;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+.page.hidden { opacity:0; pointer-events:none; transform:scale(0.97); }
+.page-inner {
+  width: 100%; max-width: 680px;
+  padding: 72px 20px 90px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+  min-height: 100svh;
+  justify-content: center;
+  position: relative; z-index: 2;
+}
+/* Scrollbar */
+.page::-webkit-scrollbar { width:4px; }
+.page::-webkit-scrollbar-track { background:transparent; }
+.page::-webkit-scrollbar-thumb { background:var(--blush); border-radius:10px; }
+
+/* ═══════════════════════════════════════════════
+   FLOATING HEARTS BG
+═══════════════════════════════════════════════ */
+#hearts-bg { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.bg-heart {
+  position:absolute; user-select:none;
+  animation: floatUp linear infinite; opacity:0;
+}
+@keyframes floatUp {
+  0%   { transform:translateY(108vh) rotate(0deg); opacity:0; }
+  8%   { opacity:0.55; }
+  92%  { opacity:0.3; }
+  100% { transform:translateY(-8vh) rotate(360deg); opacity:0; }
+}
+
+/* ═══════════════════════════════════════════════
+   SHARED COMPONENTS
+═══════════════════════════════════════════════ */
+/* Panda decorations */
+.panda { position:absolute; user-select:none; pointer-events:none; animation:pandaBob 3.5s ease-in-out infinite; }
+@keyframes pandaBob { 0%,100%{transform:translateY(0) rotate(-6deg);} 50%{transform:translateY(-10px) rotate(4deg);} }
+
+/* Buttons — mobile-first tap targets */
+.btn-primary {
+  background: linear-gradient(135deg, var(--rose), var(--baby-red));
+  color: white; border: none; border-radius: 50px;
+  padding: 15px 36px; font-family: 'Dancing Script', cursive;
+  font-size: clamp(1rem, 4vw, 1.25rem); cursor: pointer;
+  box-shadow: 0 6px 24px rgba(232,83,106,0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative; overflow: hidden; letter-spacing:0.5px;
+  min-height: 50px; touch-action: manipulation;
+  -webkit-appearance: none;
+}
+.btn-primary::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.25),transparent);
+  pointer-events:none;
+}
+.btn-primary:active { transform:scale(0.95); box-shadow:0 4px 16px rgba(232,83,106,0.3); }
+@media(hover:hover) {
+  .btn-primary:hover { transform:translateY(-4px) scale(1.05); box-shadow:0 10px 32px rgba(232,83,106,0.45); }
+}
+.btn-secondary {
+  background: white; border:2px solid var(--blush);
+  border-radius:50px; padding:12px 28px;
+  font-family:'Dancing Script',cursive; font-size:clamp(1rem,4vw,1.1rem);
+  color:var(--baby-red); cursor:pointer;
+  box-shadow:0 4px 16px var(--shadow);
+  transition:transform 0.2s ease;
+  min-height:48px; touch-action:manipulation;
+  -webkit-appearance:none;
+}
+.btn-secondary:active { transform:scale(0.95); }
+@media(hover:hover){ .btn-secondary:hover { background:var(--petal); transform:translateY(-3px) scale(1.04); } }
+
+/* Mute button — safe area top */
+#muteBtn {
+  position:fixed; top:max(14px, env(safe-area-inset-top)); right:14px; z-index:999;
+  background:rgba(255,255,255,0.92); border:2px solid var(--blush);
+  border-radius:50px; padding:9px 16px;
+  font-size:0.8rem; color:var(--baby-red); cursor:pointer;
+  box-shadow:0 4px 14px var(--shadow); backdrop-filter:blur(8px);
+  transition:all 0.3s ease; font-family:'Cormorant Garamond',serif;
+  min-height:40px; touch-action:manipulation; -webkit-appearance:none;
+}
+#muteBtn:active { transform:scale(0.95); }
+@media(hover:hover){ #muteBtn:hover { background:var(--petal); transform:scale(1.05); } }
+
+/* Page nav dots — safe area bottom */
+#nav-dots {
+  position:fixed; bottom:max(18px, env(safe-area-inset-bottom, 18px)); left:50%; transform:translateX(-50%);
+  display:flex; gap:10px; z-index:999;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(8px);
+  padding:8px 16px; border-radius:20px;
+  border:1px solid rgba(255,182,193,0.3);
+}
+.nav-dot {
+  width:9px; height:9px; border-radius:50%;
+  background:var(--blush); cursor:pointer;
+  transition:all 0.3s ease; border:none;
+  min-width:30px; min-height:30px;
+  display:flex; align-items:center; justify-content:center;
+  background-clip:unset; padding:0;
+  position:relative; touch-action:manipulation;
+}
+.nav-dot::after {
+  content:''; position:absolute; width:9px; height:9px;
+  border-radius:50%; background:var(--blush);
+  transition:all 0.3s ease;
+}
+.nav-dot.active::after { background:var(--baby-red); transform:scale(1.4); }
+@media(max-width:380px) {
+  .nav-dot { min-width:24px; min-height:24px; }
+  .nav-dot::after { width:7px; height:7px; }
+}
+
+/* Confetti */
+.confetti-heart {
+  position:fixed; pointer-events:none; z-index:500;
+  animation:confettiBurst var(--dur,1.4s) ease-out forwards;
+}
+@keyframes confettiBurst {
+  0%   { transform:translate(0,0) scale(0) rotate(0deg); opacity:1; }
+  60%  { opacity:1; }
+  100% { transform:translate(var(--tx),var(--ty)) scale(1.3) rotate(var(--r)); opacity:0; }
+}
+/* Sparkle overlay */
+.sparkle-overlay {
+  position:fixed; inset:0; pointer-events:none; z-index:100;
+  background:radial-gradient(ellipse at center, rgba(255,182,193,0.55) 0%, transparent 70%);
+  animation:sparkleOut 1s ease forwards;
+}
+@keyframes sparkleOut { 0%{opacity:1;} 100%{opacity:0;} }
+/* Typewriter cursor */
+.tw-cursor { display:inline-block; width:2px; height:1em; background:var(--rose); margin-left:2px; vertical-align:text-bottom; animation:blink 0.75s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* Secret message */
+.secret-msg {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.4rem,5vw,2rem); color:var(--baby-red);
+  background:linear-gradient(135deg,#ffe0e8,#fff5f7);
+  padding:16px 36px; border-radius:20px;
+  border:2px solid var(--blush);
+  box-shadow:0 6px 24px var(--shadow);
+  animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  display:none; text-align:center;
+}
+@keyframes popIn { from{transform:scale(0.4) rotate(-8deg);opacity:0;} to{transform:scale(1) rotate(0);opacity:1;} }
+
+/* ═══════════════════════════════════════════════
+   PAGE 1 — HOME
+═══════════════════════════════════════════════ */
+#p1 {
+  background: radial-gradient(ellipse at 65% 35%, #FFE0E9 0%, #FFF2F5 45%, var(--cream) 100%);
+  animation: pageFadeIn 1.2s ease 0.1s both;
+}
+@keyframes pageFadeIn { from{opacity:0;} to{opacity:1;} }
+
+.home-tagline { font-family:'Cormorant Garamond',serif; font-size:clamp(0.72rem,2.5vw,0.85rem); font-weight:300; letter-spacing:4px; text-transform:uppercase; color:var(--text-light); }
+.home-title { font-family:'Dancing Script',cursive; font-size:clamp(1.8rem,7vw,3.2rem); color:var(--baby-red); text-shadow:0 3px 20px rgba(232,83,106,0.2); animation:titleFloat 3.5s ease-in-out infinite; text-align:center; }
+@keyframes titleFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);} }
+
+/* SVG heart button */
+.heart-btn {
+  position:relative; width:clamp(190px,55vw,230px); height:clamp(190px,55vw,230px);
+  background:none; border:none; cursor:pointer;
+  animation:heartPulse 1.7s ease-in-out infinite;
+  transition:transform 0.2s ease; margin:4px 0;
+  touch-action:manipulation; -webkit-appearance:none;
+}
+.heart-btn:active { transform:scale(0.93); animation-play-state:paused; }
+@media(hover:hover){ .heart-btn:hover { transform:scale(1.1); animation-play-state:paused; } }
+.heart-btn svg { width:100%; height:100%; filter:drop-shadow(0 8px 28px rgba(232,83,106,0.45)); }
+.heart-btn-lbl {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Dancing Script',cursive; font-size:clamp(0.95rem,3.5vw,1.1rem);
+  color:white; text-shadow:0 1px 5px rgba(0,0,0,0.15);
+  line-height:1.4; padding:clamp(28px,8vw,36px); text-align:center;
+}
+@keyframes heartPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
+
+.hint-text { font-size:clamp(0.72rem,2.5vw,0.8rem); letter-spacing:2px; color:var(--text-light); opacity:0.7; }
+
+/* ═══════════════════════════════════════════════
+   PAGE 2 — SURPRISE
+═══════════════════════════════════════════════ */
+#p2 { background:radial-gradient(ellipse at 40% 40%, #FFE6ED 0%, #FFF3F6 50%, var(--cream) 100%); }
+
+.dear-heading {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(2rem,9vw,4.2rem);
+  color:var(--baby-red);
+  text-shadow:0 4px 24px rgba(232,83,106,0.3);
+  line-height:1.1; text-align:center;
+}
+.message-card {
+  background:white; border-radius:24px;
+  padding:clamp(18px,5vw,36px);
+  box-shadow:0 10px 48px rgba(232,83,106,0.1), 0 2px 8px rgba(232,83,106,0.06);
+  border:1.5px solid rgba(255,182,193,0.4);
+  max-width:500px; width:100%; position:relative; overflow:hidden;
+}
+.message-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,221,225,0.3) 0%,transparent 60%);
+  pointer-events:none;
+}
+.message-card p {
+  font-size:clamp(0.95rem,3.5vw,1.2rem); font-weight:300;
+  color:#9b4f60; line-height:1.85; letter-spacing:0.3px;
+  font-style:italic;
+}
+.panda-hug { display:flex; align-items:flex-end; justify-content:center; font-size:clamp(46px,13vw,80px); }
+.p-left  { display:inline-block; animation:pandaLean 2.5s ease-in-out infinite; }
+.p-right { display:inline-block; transform:scaleX(-1); animation:pandaLean 2.5s ease-in-out infinite 0.4s; }
+.p-mid   { display:inline-block; font-size:0.6em; animation:heartThob 1s ease-in-out infinite; margin:0 2px; align-self:center; position:relative; bottom:10px; }
+@keyframes pandaLean { 0%,100%{transform:rotate(-9deg);} 50%{transform:rotate(-3deg) translateY(-7px);} }
+@keyframes heartThob  { 0%,100%{transform:scale(1);} 50%{transform:scale(1.35);} }
+.btn-row { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; width:100%; }
+.btn-row .btn-primary { flex:1; min-width:140px; max-width:220px; text-align:center; }
+.click-ctr { font-family:'Dancing Script',cursive; font-size:1rem; color:var(--text-light); min-height:24px; }
+
+/* ═══════════════════════════════════════════════
+   PAGE 3 — STORY
+═══════════════════════════════════════════════ */
+#p3 {
+  background: linear-gradient(160deg, #FFF8EE 0%, #FFF3E8 40%, #FFEEE0 100%);
+}
+#p3 .page-inner { justify-content:flex-start; padding-top:76px; padding-bottom:96px; gap:18px; }
+
+.story-header {
+  font-family:'Dancing Script',cursive; font-size:clamp(1.6rem,7vw,2.8rem);
+  color:var(--baby-red); text-align:center;
+  text-shadow:0 3px 16px rgba(232,83,106,0.2);
+}
+.story-divider {
+  width:100%; max-width:360px;
+  display:flex; align-items:center; gap:10px;
+  color:var(--blush); font-size:1.1rem;
+}
+.story-divider::before, .story-divider::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg,transparent,var(--blush),transparent);
+}
+.story-body {
+  background: rgba(255,255,255,0.8);
+  border-radius:20px;
+  padding:clamp(18px,5vw,40px);
+  box-shadow:0 8px 40px rgba(200,120,100,0.1), 0 2px 8px rgba(200,120,100,0.06);
+  border:1px solid rgba(255,200,180,0.4);
+  max-width:640px; width:100%;
+  position:relative;
+}
+.story-body::before {
+  content: '"';
+  position:absolute; top:6px; left:14px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:80px; color:rgba(232,83,106,0.06);
+  line-height:1; pointer-events:none;
+}
+.story-para {
+  font-size:clamp(0.9rem,3.5vw,1.05rem); font-weight:300;
+  color:#7A4530; line-height:1.95; letter-spacing:0.2px;
+  opacity:0; animation:fadeUp 0.7s ease forwards;
+  margin-bottom:10px;
+}
+.story-para:last-child { margin-bottom:0; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+.story-em { font-style:italic; color:var(--baby-red); }
+.story-break { border:none; border-top:1px dashed rgba(232,83,106,0.2); margin:14px 0; }
+.sparkle-gold { color:var(--gold); font-size:0.9em; }
+
+/* Paper texture via repeating gradient */
+#p3::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.03;
+  background: repeating-linear-gradient(0deg, transparent, transparent 27px, #c07050 28px);
+}
+
+/* ═══════════════════════════════════════════════
+   PAGE 4 — LOVE IN LANGUAGES
+═══════════════════════════════════════════════ */
+#p4 { background: linear-gradient(145deg,#FFF0F5 0%,#F5EFF8 50%,#EEF5F0 100%); }
+
+.corkboard-title { font-family:'Dancing Script',cursive; font-size:clamp(1.6rem,7vw,2.8rem); color:var(--baby-red); text-align:center; }
+
+.notes-grid { display:flex; flex-direction:column; gap:22px; width:100%; max-width:520px; align-items:center; }
+.sticky-note {
+  background: white;
+  border-radius:12px;
+  padding:clamp(16px,4vw,26px) clamp(16px,4vw,28px);
+  box-shadow: 5px 6px 20px rgba(150,80,100,0.13), 0 2px 6px rgba(150,80,100,0.07);
+  border-top:5px solid var(--c, var(--rose));
+  position:relative; width:100%;
+  display:flex; align-items:center; gap:clamp(12px,3vw,18px);
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sticky-note:nth-child(1) { transform:rotate(-1.2deg); --c:#FF8FAB; }
+.sticky-note:nth-child(2) { transform:rotate(1deg);    --c:#FFB347; }
+.sticky-note:nth-child(3) { transform:rotate(-0.6deg); --c:#87CEEB; }
+@media(hover:hover){ .sticky-note:hover { transform:rotate(0) scale(1.02); box-shadow:8px 10px 28px rgba(150,80,100,0.18); } }
+.sticky-note:active { transform:rotate(0) scale(0.98); }
+.note-panda { font-size:clamp(32px,8vw,52px); flex-shrink:0; animation:pandaBob 3s ease-in-out infinite; }
+.note-content { flex:1; min-width:0; }
+.note-lang { font-size:clamp(0.65rem,2.5vw,0.72rem); letter-spacing:3px; text-transform:uppercase; color:var(--text-light); margin-bottom:5px; font-family:'Cormorant Garamond',serif; }
+.note-text { font-family:'Caveat',cursive; font-size:clamp(1rem,4.5vw,1.5rem); color:var(--text); line-height:1.4; word-break:break-word; }
+.heart-sticker { position:absolute; top:-11px; right:14px; font-size:22px; animation:heartThob 1.5s ease-in-out infinite; }
+
+/* ═══════════════════════════════════════════════
+   PAGE 5 — CODE
+═══════════════════════════════════════════════ */
+#p5 { background:#1a1224; }
+#p5 .page-inner { padding-top:72px; padding-bottom:96px; }
+#p5.light-mode { background:linear-gradient(145deg,#FFF0F5 0%,#FFF5F8 100%); }
+
+.code-page-title { font-family:'Dancing Script',cursive; font-size:clamp(1.6rem,7vw,2.8rem); color:#FF8FAB; text-align:center; text-shadow:0 0 30px rgba(255,143,171,0.4); }
+#p5.light-mode .code-page-title { color:var(--baby-red); text-shadow:none; }
+.code-subtitle { font-size:clamp(0.7rem,2.5vw,0.85rem); letter-spacing:2px; text-transform:uppercase; color:#9e7bbd; font-family:'JetBrains Mono',monospace; text-align:center; }
+#p5.light-mode .code-subtitle { color:var(--text-light); }
+
+.code-grid { display:grid; grid-template-columns:1fr; gap:14px; width:100%; max-width:500px; }
+@media(min-width:600px){ .code-grid { grid-template-columns:1fr 1fr; max-width:680px; } }
+
+.code-card {
+  background:#241737; border-radius:14px;
+  border:1px solid rgba(255,143,171,0.15);
+  overflow:hidden;
+  box-shadow:0 6px 24px rgba(0,0,0,0.35);
+  transition:transform 0.2s ease;
+}
+#p5.light-mode .code-card { background:white; border-color:var(--blush); box-shadow:0 6px 24px var(--shadow); }
+@media(hover:hover){ .code-card:hover { transform:translateY(-5px); } }
+.code-card:active { transform:scale(0.98); }
+
+.code-header {
+  background:#1a0f2e; padding:9px 14px;
+  display:flex; align-items:center; gap:7px;
+  border-bottom:1px solid rgba(255,143,171,0.1);
+}
+#p5.light-mode .code-header { background:#FFF0F5; border-bottom:1px solid var(--petal); }
+.code-dots { display:flex; gap:5px; }
+.code-dot { width:9px; height:9px; border-radius:50%; }
+.cd-r{background:#FF5F57;} .cd-y{background:#FFBD2E;} .cd-g{background:#28CA41;}
+.code-lang-name { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:#9e7bbd; margin-left:4px; }
+#p5.light-mode .code-lang-name { color:var(--text-light); }
+.code-body {
+  padding:14px 16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(0.68rem,2.8vw,0.8rem);
+  line-height:1.7; white-space:pre; overflow-x:auto;
+  color:#f8f8f2;
+  -webkit-overflow-scrolling:touch;
+}
+@media(min-width:600px){ .code-body { font-size:clamp(0.7rem,1.6vw,0.82rem); } }
+
+/* Syntax colors – dark */
+.kw  { color:#FF79C6; }
+.ns  { color:#8BE9FD; }
+.fn  { color:#50FA7B; }
+.str { color:#F1FA8C; }
+.cm  { color:#6272A4; }
+.br  { color:#BD93F9; }
+.nu  { color:#FFB86C; }
+
+/* Syntax colors – light */
+#p5.light-mode .code-body { color:#443040; }
+#p5.light-mode .kw  { color:#C0336A; }
+#p5.light-mode .ns  { color:#2060A0; }
+#p5.light-mode .fn  { color:#008060; }
+#p5.light-mode .str { color:#A05020; }
+#p5.light-mode .cm  { color:#908090; }
+#p5.light-mode .br  { color:#6040A0; }
+#p5.light-mode .nu  { color:#E08020; }
+
+.dark-toggle {
+  background:rgba(255,143,171,0.12); border:1px solid rgba(255,143,171,0.25);
+  border-radius:50px; padding:10px 22px; color:#FF8FAB;
+  font-family:'JetBrains Mono',monospace; font-size:clamp(0.7rem,2.5vw,0.78rem);
+  cursor:pointer; transition:all 0.2s ease;
+  min-height:44px; touch-action:manipulation; -webkit-appearance:none;
+}
+#p5.light-mode .dark-toggle { background:rgba(232,83,106,0.08); border-color:var(--blush); color:var(--baby-red); }
+.dark-toggle:active { transform:scale(0.95); }
+
+/* ═══════════════════════════════════════════════
+   PAGE 6 — GALLERY
+═══════════════════════════════════════════════ */
+#p6 { background:radial-gradient(ellipse at 50% 30%, #FFE8EE 0%, #FFF5F7 60%, var(--cream) 100%); }
+
+.gallery-title { font-family:'Dancing Script',cursive; font-size:clamp(1.6rem,7vw,2.8rem); color:var(--baby-red); text-align:center; }
+.gallery-sub { font-size:clamp(0.82rem,3vw,0.9rem); font-style:italic; color:var(--text-light); text-align:center; }
+
+.photo-grid {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:12px; width:100%; max-width:500px;
+}
+@media(min-width:500px){ .photo-grid { grid-template-columns:repeat(3,1fr); max-width:580px; gap:14px; } }
+
+.photo-box {
+  aspect-ratio:1; border-radius:16px; overflow:hidden;
+  border:3px solid white;
+  box-shadow:0 5px 20px rgba(232,83,106,0.15);
+  position:relative; transition:transform 0.25s ease, box-shadow 0.25s ease;
+  background: linear-gradient(135deg, var(--petal), #FFE8EE);
+  cursor:pointer; touch-action:manipulation;
+}
+@media(hover:hover){ .photo-box:hover { transform:scale(1.06) rotate(1deg); box-shadow:0 12px 36px rgba(232,83,106,0.25); } }
+.photo-box:active { transform:scale(0.96); }
+.photo-box img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo-placeholder {
+  width:100%; height:100%;
+  display:none;
+  flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:6px; color:var(--rose);
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(0.65rem,2.5vw,0.85rem);
+  text-align:center; padding:10px;
+}
+.photo-placeholder span { font-size:clamp(20px,6vw,34px); }
+.photo-heart {
+  position:absolute; top:-5px; right:-5px;
+  background:white; border-radius:50%;
+  width:26px; height:26px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; box-shadow:0 2px 8px var(--shadow);
+}
+
+/* ═══════════════════════════════════════════════
+   PAGE 7 — FINAL / PROPOSAL
+═══════════════════════════════════════════════ */
+#p7 { background:radial-gradient(ellipse at 50% 40%, #FFD6DE 0%, #FFE8EE 40%, #FFF5F7 100%); }
+
+.final-glow-ring {
+  width:clamp(220px,70vw,340px); height:clamp(220px,70vw,340px);
+  border-radius:50%; border:3px solid rgba(255,182,193,0.5);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+  animation:ringPulse 2.5s ease-in-out infinite;
+  box-shadow:0 0 50px rgba(232,83,106,0.2), inset 0 0 50px rgba(255,182,193,0.1);
+  flex-shrink:0;
+}
+.final-glow-ring::before {
+  content:''; position:absolute; inset:-10px; border-radius:50%;
+  border:1.5px dashed rgba(232,83,106,0.25);
+  animation:spin 20s linear infinite;
+}
+@keyframes ringPulse { 0%,100%{transform:scale(1);box-shadow:0 0 50px rgba(232,83,106,0.2);} 50%{transform:scale(1.03);box-shadow:0 0 70px rgba(232,83,106,0.35);} }
+@keyframes spin { to{transform:rotate(360deg);} }
+
+.final-ring-inner {
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:12px; text-align:center; padding:24px;
+}
+.ring-panda { font-size:clamp(42px,12vw,72px); }
+.ring-emoji { font-size:clamp(24px,7vw,44px); animation:heartThob 1.3s ease-in-out infinite; }
+
+.final-heading {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.5rem,6.5vw,3rem); color:var(--baby-red);
+  text-shadow:0 4px 24px rgba(232,83,106,0.3); text-align:center;
+  line-height:1.3;
+}
+.final-subtext {
+  font-size:clamp(0.88rem,3.5vw,1.1rem); font-weight:300;
+  font-style:italic; color:#9b4f60; text-align:center;
+  max-width:400px; line-height:1.8; padding:0 8px;
+}
+.final-ring-icon { position:absolute; top:-18px; font-size:28px; animation:ringFloat 2s ease-in-out infinite; }
+@keyframes ringFloat { 0%,100%{transform:translateY(0) rotate(-10deg);} 50%{transform:translateY(-10px) rotate(5deg);} }
+
+/* ═══════════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════════════ */
+
+/* All phones */
+@media(max-width:480px) {
+  .page-inner { padding:68px 16px 88px; gap:16px; }
+  #p3 .page-inner { padding-top:72px; padding-bottom:92px; }
+  #p5 .page-inner { padding-top:68px; padding-bottom:92px; }
+
+  /* Reduce corner pandas on tiny screens */
+  .panda { font-size:clamp(22px,8vw,38px) !important; }
+
+  /* Buttons full-width on small phones */
+  .btn-row { flex-direction:column; align-items:center; }
+  .btn-row .btn-primary { max-width:100%; width:100%; }
+  .btn-primary, .btn-secondary { width:100%; max-width:300px; }
+
+  /* Story body tighter */
+  .story-body { padding:16px; }
+  .story-body::before { font-size:60px; top:4px; left:10px; }
+
+  /* Nav dots smaller container */
+  #nav-dots { padding:6px 12px; gap:8px; }
+
+  /* Mute button compact */
+  #muteBtn { padding:7px 12px; font-size:0.75rem; }
+
+  /* Message card */
+  .message-card { border-radius:18px; }
+
+  /* Final page — tighter */
+  .final-glow-ring { width:clamp(200px,80vw,280px); height:clamp(200px,80vw,280px); }
+}
+
+/* Very small phones (iPhone SE, etc) */
+@media(max-width:360px) {
+  .home-title { font-size:1.6rem; }
+  .dear-heading { font-size:1.8rem; }
+  .heart-btn { width:180px; height:180px; }
+  .final-glow-ring { width:190px; height:190px; }
+  .ring-panda { font-size:36px; }
+  .page-inner { padding:64px 14px 84px; }
+}
+
+/* Landscape phones */
+@media(max-height:500px) and (orientation:landscape) {
+  .page-inner { min-height:auto; padding:60px 20px 70px; justify-content:flex-start; gap:12px; }
+  .heart-btn { width:130px; height:130px; }
+  .panda { display:none; }
+  .final-glow-ring { width:160px; height:160px; }
+  .ring-panda { font-size:32px; }
+  .ring-emoji { font-size:20px; }
+  .final-ring-inner { gap:6px; padding:16px; }
+  .panda-hug { font-size:42px; }
+  #p3 .page-inner, #p5 .page-inner { padding-top:60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Floating hearts background -->
+<div id="hearts-bg"></div>
+
+<!-- Music toggle -->
+<button id="muteBtn" onclick="toggleMusic()">🎵 Music</button>
+
+<!-- Page nav dots -->
+<div id="nav-dots"></div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 1 — HOME
+══════════════════════════════════════════ -->
+<div class="page" id="p1">
+  <div class="panda" style="top:8%;left:4%;font-size:clamp(36px,6vw,60px);animation-delay:0s">🐼</div>
+  <div class="panda" style="top:12%;right:5%;font-size:clamp(32px,5vw,52px);animation-delay:0.8s">🐼</div>
+  <div class="panda" style="bottom:22%;left:3%;font-size:clamp(28px,4.5vw,46px);animation-delay:1.5s">🐼</div>
+  <div class="panda" style="bottom:14%;right:4%;font-size:clamp(34px,5.5vw,56px);animation-delay:0.5s">🐼</div>
+  <div class="panda" style="top:48%;left:1.5%;font-size:clamp(24px,4vw,40px);animation-delay:2s">🐼</div>
+
+  <div class="page-inner">
+    <p class="home-tagline">with love &nbsp;·&nbsp; always</p>
+    <h1 class="home-title">Happy Valentine's Day 💕</h1>
+
+    <button class="heart-btn" id="heartBtn" onclick="goTo(2)" aria-label="Click for a surprise">
+      <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#FF9BBB"/>
+            <stop offset="50%"  stop-color="#E8536A"/>
+            <stop offset="100%" stop-color="#B02050"/>
+          </linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M100 158 C58 128,8 96,8 56 C8 26,33 8,58 8 C74 8,90 18,100 34 C110 18,126 8,142 8 C167 8,192 26,192 56 C192 96,142 128,100 158Z" fill="url(#hg)" filter="url(#glow)"/>
+        <ellipse cx="68" cy="46" rx="22" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-30,68,46)"/>
+        <text x="148" y="42" font-size="18" opacity="0.85">✨</text>
+        <text x="24" y="54" font-size="13" opacity="0.7">✨</text>
+        <text x="85" y="130" font-size="11" opacity="0.6">💫</text>
+      </svg>
+      <span class="heart-btn-lbl">Click for a Surprise 💖</span>
+    </button>
+
+    <p class="hint-text">↑ tap the heart ↑</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 2 — SURPRISE
+══════════════════════════════════════════ -->
+<div class="page hidden" id="p2">
+  <div class="panda" style="top:6%;left:3%;font-size:clamp(30px,5vw,50px)">🐼</div>
+  <div class="panda" style="top:8%;right:4%;font-size:clamp(28px,4.5vw,46px);animation-delay:1s">🐼</div>
+  <div class="panda" style="bottom:15%;left:3%;font-size:clamp(26px,4vw,42px);animation-delay:0.5s">🐼</div>
+  <div class="panda" style="bottom:10%;right:3%;font-size:clamp(32px,5vw,52px);animation-delay:1.8s">🐼</div>
+
+  <div class="page-inner">
+    <div class="panda-hug">
+      <span class="p-left">🐼</span>
+      <span class="p-mid">💗</span>
+      <span class="p-right">🐼</span>
+    </div>
+
+    <h2 class="dear-heading">Dear Popouuu 💕</h2>
+
+    <div class="message-card">
+      <p>You make my world brighter every single day.<br>You are the warmth in my mornings and the peace in my evenings.<br><br>Happy Valentine's Day, my love ❤️</p>
+    </div>
+
+    <div class="secret-msg" id="secretMsg">Forever Yours 💍</div>
+    <div class="click-ctr" id="clickCtr"></div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="burstHearts()">Click Me Again 💖</button>
+      <button class="btn-primary" onclick="goTo(3)">Read Our Story 📖</button>
+    </div>
+    <button class="btn-secondary" onclick="goTo(1)">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 3 — THE STORY
+══════════════════════════════════════════ -->
+<div class="page hidden" id="p3">
+  <div class="panda" style="bottom:6%;right:4%;font-size:clamp(40px,7vw,64px)">🐼</div>
+
+  <div class="page-inner">
+    <h2 class="story-header">✨ Our Story ✨</h2>
+    <div class="story-divider">💕</div>
+
+    <div class="story-body" id="storyBody">
+      <!-- Story paragraphs injected by JS -->
+    </div>
+
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn-primary" onclick="goTo(4)">Love in Every Language 💌</button>
+    </div>
+    <button class="btn-secondary" onclick="goTo(2)">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 4 — LOVE IN LANGUAGES
+══════════════════════════════════════════ -->
+<div class="page hidden" id="p4">
+  <div class="page-inner">
+    <h2 class="corkboard-title">Love, in Every Language 💕</h2>
+
+    <div class="notes-grid">
+
+      <!-- Note 1: Assamese -->
+      <div class="sticky-note">
+        <div class="heart-sticker">💗</div>
+        <span class="note-panda">🐼</span>
+        <div class="note-content">
+          <div class="note-lang">Assamese</div>
+          <div class="note-text">মই তোমাক বহুত ভাল পাওঁ ৰিমিপুলাও</div>
+        </div>
+      </div>
+
+      <!-- Note 2: English -->
+      <div class="sticky-note">
+        <div class="heart-sticker">💖</div>
+        <span class="note-panda">🐼</span>
+        <div class="note-content">
+          <div class="note-lang">English</div>
+          <div class="note-text">I love you so much Rimipulao</div>
+        </div>
+      </div>
+
+      <!-- Note 3: Hindi -->
+      <div class="sticky-note">
+        <div class="heart-sticker">💝</div>
+        <span class="note-panda">🐼</span>
+        <div class="note-content">
+          <div class="note-lang">Hindi</div>
+          <div class="note-text">मैं तुमसे बहुत प्यार करता हूँ रिमिपुलाओ</div>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn-primary" onclick="goTo(5)">Love in Code 💻</button>
+    <button class="btn-secondary" onclick="goTo(3)">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 5 — CODE
+══════════════════════════════════════════ -->
+<div class="page hidden" id="p5">
+  <div class="panda" style="top:8%;left:4%;font-size:clamp(28px,5vw,46px);animation-delay:0.3s;filter:hue-rotate(240deg)">🐼</div>
+  <div class="panda" style="bottom:14%;right:5%;font-size:clamp(26px,4vw,42px);animation-delay:1.2s;filter:hue-rotate(240deg)">🐼</div>
+
+  <div class="page-inner">
+    <h2 class="code-page-title">I Love You, in Code 💻</h2>
+    <p class="code-subtitle">// because I'm a CS student 🐼</p>
+
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center">
+      <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Theme 🌙</button>
+    </div>
+
+    <div class="code-grid">
+
+      <!-- C++ -->
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+          <span class="code-lang-name">C++ 💙</span>
+        </div>
+        <div class="code-body"><span class="cm">// Love.cpp</span>
+<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> <span class="ns">std</span>;
+
+<span class="ns">int</span> <span class="fn">main</span><span class="br">()</span> <span class="br">{</span>
+  <span class="ns">cout</span> <span class="kw">&lt;&lt;</span> <span class="str">"I love you
+  Rimipulao ❤️"</span>;
+  <span class="kw">return</span> <span class="nu">0</span>;
+<span class="br">}</span></div>
+      </div>
+
+      <!-- C -->
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+          <span class="code-lang-name">C 🤍</span>
+        </div>
+        <div class="code-body"><span class="cm">// love.c</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="ns">int</span> <span class="fn">main</span><span class="br">()</span> <span class="br">{</span>
+  <span class="fn">printf</span><span class="br">(</span><span class="str">"I love you
+  Rimipulao ❤️"</span><span class="br">)</span>;
+  <span class="kw">return</span> <span class="nu">0</span>;
+<span class="br">}</span></div>
+      </div>
+
+      <!-- Java -->
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+          <span class="code-lang-name">Java ☕</span>
+        </div>
+        <div class="code-body"><span class="cm">// Love.java</span>
+<span class="kw">public class</span> <span class="ns">Love</span> <span class="br">{</span>
+  <span class="kw">public static void</span>
+  <span class="fn">main</span><span class="br">(</span><span class="ns">String</span><span class="br">[]</span> args<span class="br">)</span> <span class="br">{</span>
+    <span class="ns">System</span>.out.
+    <span class="fn">println</span><span class="br">(</span><span class="str">"I love you
+    Rimipulao ❤️"</span><span class="br">)</span>;
+  <span class="br">}</span>
+<span class="br">}</span></div>
+      </div>
+
+      <!-- Python -->
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+          <span class="code-lang-name">Python 🐍</span>
+        </div>
+        <div class="code-body"><span class="cm"># love.py</span>
+
+
+<span class="fn">print</span><span class="br">(</span><span class="str">"I love you
+Rimipulao ❤️"</span><span class="br">)</span>
+
+
+
+<span class="cm"># simple &amp; sweet 🐼</span></div>
+      </div>
+
+      <!-- HTML -->
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+          <span class="code-lang-name">HTML 🌸</span>
+        </div>
+        <div class="code-body"><span class="cm">&lt;!-- love.html --&gt;</span>
+<span class="kw">&lt;html&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+
+  <span class="kw">&lt;h1&gt;</span><span class="str">I love you
+  Rimipulao ❤️</span><span class="kw">&lt;/h1&gt;</span>
+
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></div>
+      </div>
+
+      <!-- Bonus: SQL -->
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+          <span class="code-lang-name">SQL 💾</span>
+        </div>
+        <div class="code-body"><span class="cm">-- love.sql 🐼</span>
+
+<span class="kw">SELECT</span>
+  <span class="str">'I love you'</span>
+  <span class="kw">AS</span> <span class="ns">message</span>,
+  <span class="str">'Rimipulao'</span>
+  <span class="kw">AS</span> <span class="ns">my_love</span>,
+  <span class="nu">100</span> <span class="kw">AS</span> <span class="ns">percent</span>
+<span class="kw">FROM</span> <span class="fn">heart</span>;
+
+<span class="cm">-- ❤️ always true</span></div>
+      </div>
+
+    </div>
+
+    <button class="btn-primary" onclick="goTo(6)">Our Memories 📸</button>
+    <button class="btn-secondary" onclick="goTo(4)">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 6 — GALLERY
+══════════════════════════════════════════ -->
+<div class="page hidden" id="p6">
+  <div class="page-inner">
+    <h2 class="gallery-title">We are so so happy 💕</h2>
+    <p class="gallery-sub">our little forever moments ✨</p>
+
+    <div class="photo-grid">
+
+      <!-- Replace photo1.jpg with our first memory photo -->
+      <div class="photo-box">
+        <img src="images/photo1.jpg" alt="Our Memory 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder"><span>💕</span>Memory 1<br><small style="opacity:0.6;font-size:0.7rem">add photo1.jpg</small></div>
+        <div class="photo-heart">💗</div>
+      </div>
+
+      <!-- Replace photo2.jpg with our cute selfie -->
+      <div class="photo-box">
+        <img src="images/photo2.jpg" alt="Our Memory 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder"><span>🌸</span>Memory 2<br><small style="opacity:0.6;font-size:0.7rem">add photo2.jpg</small></div>
+        <div class="photo-heart">🌸</div>
+      </div>
+
+      <!-- Replace photo3.jpg with college memory -->
+      <div class="photo-box">
+        <img src="images/photo3.jpg" alt="Our Memory 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder"><span>✨</span>Memory 3<br><small style="opacity:0.6;font-size:0.7rem">add photo3.jpg</small></div>
+        <div class="photo-heart">✨</div>
+      </div>
+
+      <!-- Replace photo4.jpg with favorite day together -->
+      <div class="photo-box">
+        <img src="images/photo4.jpg" alt="Our Memory 4" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder"><span>💖</span>Memory 4<br><small style="opacity:0.6;font-size:0.7rem">add photo4.jpg</small></div>
+        <div class="photo-heart">💖</div>
+      </div>
+
+      <!-- Replace photo5.jpg with random cute moment -->
+      <div class="photo-box">
+        <img src="images/photo5.jpg" alt="Our Memory 5" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder"><span>🐼</span>Memory 5<br><small style="opacity:0.6;font-size:0.7rem">add photo5.jpg</small></div>
+        <div class="photo-heart">🐼</div>
+      </div>
+
+      <!-- Replace photo6.jpg with best smile photo -->
+      <div class="photo-box">
+        <img src="images/photo6.jpg" alt="Our Memory 6" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder"><span>💝</span>Memory 6<br><small style="opacity:0.6;font-size:0.7rem">add photo6.jpg</small></div>
+        <div class="photo-heart">💝</div>
+      </div>
+
+    </div>
+
+    <button class="btn-primary" onclick="goTo(7)">Final Message 💖</button>
+    <button class="btn-secondary" onclick="goTo(5)">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PAGE 7 — FINAL / PROPOSAL
+══════════════════════════════════════════ -->
+<div class="page hidden" id="p7">
+  <div class="panda" style="top:7%;left:4%;font-size:clamp(36px,6vw,60px)">🐼</div>
+  <div class="panda" style="top:9%;right:5%;font-size:clamp(32px,5vw,54px);animation-delay:1.2s">🐼</div>
+  <div class="panda" style="bottom:16%;left:5%;font-size:clamp(28px,4.5vw,48px);animation-delay:0.7s">🐼</div>
+  <div class="panda" style="bottom:10%;right:5%;font-size:clamp(34px,5.5vw,58px);animation-delay:1.8s">🐼</div>
+
+  <div class="page-inner">
+    <div class="final-glow-ring">
+      <div class="final-ring-icon">💍</div>
+      <div class="final-ring-inner">
+        <span class="ring-panda">🐼</span>
+        <span class="ring-emoji">❤️</span>
+        <span class="ring-panda" style="transform:scaleX(-1)">🐼</span>
+      </div>
+    </div>
+
+    <h2 class="final-heading">You are already my valentine,<br>so no excuse 😊</h2>
+    <p class="final-subtext">
+      …and you have to spend the rest of your life with me, Popou 💍❤️<br><br>
+      <em style="font-size:0.95em;color:var(--text-light)">from the boy who studied just to be worthy of you.</em>
+    </p>
+
+    <button class="btn-primary" onclick="finalBurst()" style="font-size:1.2rem;padding:16px 48px;">
+      💖 Forever &amp; Always 💖
+    </button>
+    <button class="btn-secondary" onclick="goTo(6)">← Back</button>
+  </div>
+</div>
+
+
+<script>
+/* ═══════════════════════════════════
+   STORY CONTENT
+═══════════════════════════════════ */
+const storyParagraphs = [
+  {text:"There was once a boy who was never considered good in studies. Academics had always been a struggle for him, and confidence even more so. On the other hand, there was a girl — brilliant, disciplined, and always among the top rankers of the college."},
+  {text:"In 2023, when they entered 12th standard, destiny quietly aligned their paths. For one year, they were placed in the same class.", em:true},
+  {text:"The boy fell in love with her at first glance. He didn't speak to her. He didn't approach her. He just noticed her — every single day in class."},
+  {text:'Believing he wasn\'t on her level, he made a silent promise to himself: <span class="story-em">"If I want to talk to her someday, I need to become better."</span>'},
+  {text:"So he studied. He pushed himself harder than ever before."},
+  {text:'By the end of 12th standard, the boy — once considered weak — had transformed. He secured <span class="story-em">9th position</span> in the class. The girl, as always exceptional, stood at <span class="story-em">6th position</span>. For him, it wasn\'t just a rank — it was proof that he had changed.'},
+  {text:"Still, courage failed him. They spoke only a few times — during practical classes, small conversations in chemistry lab sessions — moments that meant far more to him than they seemed.", break:true},
+  {text:"Soon after, 12th standard ended. Life moved forward. They went to different colleges. Separate paths, separate routines.", em:true},
+  {text:"The boy tried to forget her. He deleted her contact. He told himself it was time to move on. But feelings don't listen to logic.", break:true},
+  {text:"Months passed. In January 2025, he saw her status. Randomly, impulsively, he replied. She replied back. They started talking again.", em:true},
+  {text:"Then, in April, destiny surprised him once more."},
+  {text:'The girl confessed her feelings — the feelings the boy never had the courage to express. <span class="story-em">He was in awe. He was super-duper happy. What once felt impossible had become real. 💕</span>'},
+  {text:"Today, the boy and the girl are together. They study in different colleges, in the same city, growing individually — yet walking the journey side by side.", break:true},
+  {text:'<span class="sparkle-gold">✨</span> Sometimes, love isn\'t about being perfect — it\'s about growth, patience, and timing. <span class="sparkle-gold">✨</span>', em:true},
+];
+
+function buildStory() {
+  const body = document.getElementById('storyBody');
+  body.innerHTML = '';
+  storyParagraphs.forEach((p, i) => {
+    if (p.break) { const hr = document.createElement('hr'); hr.className='story-break'; body.appendChild(hr); }
+    const el = document.createElement('p');
+    el.className = 'story-para' + (p.em ? ' story-em' : '');
+    el.style.animationDelay = (i * 0.08) + 's';
+    el.innerHTML = p.text;
+    body.appendChild(el);
+  });
+}
+buildStory();
+
+/* ═══════════════════════════════════
+   PAGE NAVIGATION
+═══════════════════════════════════ */
+const TOTAL_PAGES = 7;
+let currentPage = 1;
+
+function goTo(n) {
+  sparkleTransition();
+  setTimeout(() => {
+    document.getElementById('p'+currentPage).classList.add('hidden');
+    currentPage = n;
+    const target = document.getElementById('p'+n);
+    target.classList.remove('hidden');
+    // Scroll to top — works on iOS
+    target.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0,0);
+    updateDots();
+    if (n === 3) { buildStory(); }
+    if (n === 2) { clickCount=0; document.getElementById('secretMsg').style.display='none'; document.getElementById('clickCtr').textContent=''; }
+  }, 350);
+}
+
+function updateDots() {
+  document.querySelectorAll('.nav-dot').forEach((d,i) => {
+    d.classList.toggle('active', i+1 === currentPage);
+  });
+}
+
+// Build nav dots
+const navDots = document.getElementById('nav-dots');
+for (let i=1;i<=TOTAL_PAGES;i++) {
+  const b = document.createElement('button');
+  b.className = 'nav-dot' + (i===1?' active':'');
+  b.setAttribute('aria-label','Go to page '+i);
+  b.onclick = () => goTo(i);
+  navDots.appendChild(b);
+}
+
+/* ═══════════════════════════════════
+   FLOATING HEARTS BACKGROUND
+═══════════════════════════════════ */
+const HEARTS = ['💕','💗','💓','❤️','🌸','✨','💖','💝','🌺','💫'];
+(function buildBgHearts() {
+  const c = document.getElementById('hearts-bg');
+  for (let i=0;i<32;i++) {
+    const h = document.createElement('div');
+    h.className='bg-heart';
+    h.textContent = HEARTS[i%HEARTS.length];
+    h.style.left = Math.random()*100+'vw';
+    h.style.fontSize = (9+Math.random()*14)+'px';
+    const dur = 9+Math.random()*14;
+    h.style.animationDuration = dur+'s';
+    h.style.animationDelay = -(Math.random()*dur)+'s';
+    c.appendChild(h);
+  }
+})();
+
+/* ═══════════════════════════════════
+   CLICK-ANYWHERE CONFETTI
+═══════════════════════════════════ */
+const CONFETTI = ['💕','💗','💖','🌸','✨','💫','❤️','💓','🌺','💝'];
+function handleInteraction(e) {
+  if (e.target.closest('button') || e.target.closest('#nav-dots') || e.target.closest('#muteBtn')) return;
+  const x = e.touches ? e.touches[0].clientX : e.clientX;
+  const y = e.touches ? e.touches[0].clientY : e.clientY;
+  spawnConfetti(x, y, 4);
+}
+document.addEventListener('click', handleInteraction);
+document.addEventListener('touchstart', handleInteraction, {passive:true});
+
+function spawnConfetti(x, y, count=10) {
+  for (let i=0;i<count;i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-heart';
+    el.textContent = CONFETTI[Math.floor(Math.random()*CONFETTI.length)];
+    el.style.left = (x + (Math.random()-.5)*30) + 'px';
+    el.style.top  = y + 'px';
+    el.style.setProperty('--tx', ((Math.random()-.5)*160)+'px');
+    el.style.setProperty('--ty', (-(60+Math.random()*160))+'px');
+    el.style.setProperty('--r',  ((Math.random()*80-40))+'deg');
+    el.style.setProperty('--dur', (0.9+Math.random()*0.8)+'s');
+    el.style.fontSize = (12+Math.random()*14)+'px';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+/* ═══════════════════════════════════
+   BURST HEARTS (page 2 button)
+═══════════════════════════════════ */
+let clickCount = 0;
+function burstHearts() {
+  clickCount++;
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  spawnConfetti(cx, cy, 20);
+  for (let i=0;i<5;i++) {
+    setTimeout(() => spawnConfetti(cx+(Math.random()-.5)*300, cy+(Math.random()-.5)*200, 8), i*120);
+  }
+  const ctr = document.getElementById('clickCtr');
+  if (clickCount < 5) { ctr.textContent = '💕'.repeat(clickCount); }
+  if (clickCount >= 5) {
+    document.getElementById('secretMsg').style.display = 'block';
+    ctr.textContent = '';
+    for (let i=0;i<40;i++) {
+      setTimeout(() => spawnConfetti(
+        Math.random()*window.innerWidth,
+        Math.random()*window.innerHeight, 3), i*60);
+    }
+  }
+}
+
+/* ═══════════════════════════════════
+   FINAL BURST (page 7)
+═══════════════════════════════════ */
+function finalBurst() {
+  for (let i=0;i<60;i++) {
+    setTimeout(() => spawnConfetti(
+      Math.random()*window.innerWidth,
+      Math.random()*window.innerHeight, 4), i*40);
+  }
+  // Flying pandas & kisses
+  ['😘','💋','💍','❤️','💕','🐼'].forEach((em,idx) => {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.style.cssText = `position:fixed;font-size:32px;left:${Math.random()*80+10}vw;top:${Math.random()*80+10}vh;pointer-events:none;z-index:600;animation:confettiBurst 2s ease-out forwards`;
+      el.textContent = em;
+      el.style.setProperty('--tx', ((Math.random()-.5)*200)+'px');
+      el.style.setProperty('--ty', (-(100+Math.random()*200))+'px');
+      el.style.setProperty('--r',  '0deg');
+      el.style.setProperty('--dur', '2s');
+      document.body.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }, idx*200);
+  });
+}
+
+/* ═══════════════════════════════════
+   SPARKLE TRANSITION
+═══════════════════════════════════ */
+function sparkleTransition() {
+  const s = document.createElement('div');
+  s.className = 'sparkle-overlay';
+  document.body.appendChild(s);
+  for (let i=0;i<14;i++) {
+    setTimeout(() => spawnConfetti(
+      Math.random()*window.innerWidth,
+      Math.random()*window.innerHeight, 3), i*55);
+  }
+  s.addEventListener('animationend', () => s.remove());
+}
+
+/* ═══════════════════════════════════
+   CODE PAGE DARK/LIGHT TOGGLE
+═══════════════════════════════════ */
+let lightMode = false;
+function toggleDarkMode() {
+  lightMode = !lightMode;
+  document.getElementById('p5').classList.toggle('light-mode', lightMode);
+}
+
+/* ═══════════════════════════════════
+   MUSIC (Web Audio API)
+═══════════════════════════════════ */
+let audioCtx=null, playing=false, musicNodes=[];
+const scale = [261.63,293.66,329.63,349.23,392.00,440.00,493.88,523.25];
+const melody = [0,2,4,7,4,2,0,5,3,1,5,3,0,4,2,7,6,4,2,0,4,7,5,3,1,0];
+
+function startMusic() {
+  if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if (playing) return;
+  playing = true;
+  let idx = 0;
+  function playNote() {
+    if (!playing) return;
+    const now = audioCtx.currentTime;
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.type = 'sine';
+    osc.frequency.value = scale[melody[idx % melody.length]];
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.055, now+0.1);
+    gain.gain.linearRampToValueAtTime(0, now+0.65);
+    osc.start(now); osc.stop(now+0.7);
+    musicNodes.push({osc,gain});
+    idx++;
+    setTimeout(playNote, 640);
+  }
+  playNote();
+}
+
+function stopMusic() {
+  playing = false;
+  musicNodes.forEach(n => { try{n.osc.stop();}catch(e){} });
+  musicNodes = [];
+}
+
+function toggleMusic() {
+  if (playing) { stopMusic(); document.getElementById('muteBtn').textContent = '🔇 Muted'; }
+  else         { startMusic(); document.getElementById('muteBtn').textContent = '🎵 Music'; }
+}
+
+// Auto-start on first interaction
+document.addEventListener('click', function autoStart() {
+  startMusic();
+  document.removeEventListener('click', autoStart);
+}, {once:true});
+</script>
+</body>
+</html>
